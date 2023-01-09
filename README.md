@@ -1,3 +1,3 @@
 # Run
 
-`sbcl --script main.lisp`
+run with `sbcl --script main.lisp`
