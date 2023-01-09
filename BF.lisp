@@ -1,4 +1,6 @@
-;;;     BASE DE FAITS
+; Base de faits
+
+; test values :
 
 ; (defparameter *BF* (list
 ;     '(= genre 'homme)
@@ -8,5 +10,6 @@
 ;     ; '(= nombreTroublesPrincipaux 1)
 ;     ))
 
+; to use with interface :
 
 (defparameter *BF* ())

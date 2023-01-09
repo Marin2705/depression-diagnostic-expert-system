@@ -1,11 +1,29 @@
 ;;; import
 (load "engine.lisp")
 
-;;; BUT
+; set *but*
 
 (defparameter *but* '(= etatDepressif T))
 
-;;; run engine :
+; set *questions*
+
+(defun testHF(x)
+    (or (equalp x 'H) (equalp x 'F)))
+
+(defun testTF(x)
+    (or (equalp x 'true) (equalp x 'false)))
+
+(defparameter *questions* (list
+    '(nombreTroublesPrincipaux "nombre de troubles principaux" numberp)
+    '(nombreTroublesSecondaires "nombre de troubles secondaires" numberp)
+    '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
+    '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
+    '(genre "votre genre ? (H/F)" testHF)
+    '(age "votre age ?" numberp)
+    '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (true/false)" testTF)
+))
+
+; run engine (with interface) :
 
 (defun printMenu()
     (terpri)
@@ -17,19 +35,6 @@
 	(write-string "2.Exit program")
     (terpri)
 )
-
-;;; questions
-
-(defparameter *questions* (list
-    '(nombreTroublesPrincipaux "nombre de troubles principaux" numberp)
-    '(nombreTroublesSecondaires "nombre de troubles secondaires" numberp)
-    '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
-    '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
-    ; (list 'genre "votre genre ? (H/F)" (list 'lambda '(x) (list 'or (list 'equalp 'x "H") (list 'equalp 'x "F")))) ;  (list 'lambda '(x) (list '+ 'x n)))
-    '(age "votre age ?" numberp)
-    ; '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (true/false)" (lambda (x) (or (equalp x "true") (equalp x "false"))))
-))
-
 
 (defun printQuestion(question)
     (terpri)

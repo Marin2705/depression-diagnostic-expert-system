@@ -8,19 +8,19 @@
     (cadr regle))
 
 ; Consequence d'une regle.
-(defun regle-consequence (regle)
-    (car (last regle)))
+; (defun regle-consequence (regle)
+;     (car (last regle)))
 
 ; Determiner les regles concluant sur un but determine.
-(defun regles-candidates (but BR)
-    (let (result)
-        (dolist (regle BR (reverse result))
-            (if (member (cadr but) (regle-consequence regle))
-                (push regle result)))))
+; (defun regles-candidates (but BR)
+;     (let (result)
+;         (dolist (regle BR (reverse result))
+;             (if (member (cadr but) (regle-consequence regle))
+;                 (push regle result)))))
 
 ; Determiner si un fait appartient ?la base de fait.
-(defun connu? (fait BF)
-    (if (member fait BF :test 'equal) T NIL))
+; (defun connu? (fait BF)
+;     (if (member fait BF :test 'equal) T NIL))
 
 ; Comparer un fait a son premisse de meme type.
 (defun eval-fait (fait premisse)
@@ -30,25 +30,35 @@
 
 ; Determiner si une règle est déclenchable c'est à dire que l'attribut est 
 ; trouvable dans la BF et qu'il est vérifié par eval-fait.
-(defun declenchable (premisse BF)
+; (defun declenchable (premisse BF)
+;     (let ((OK NIL))
+;         (dolist (fait BF OK)
+;             (if (member (nth 1 premisse) fait :test 'equal)
+;                 (setq OK (eval-fait fait premisse))))))
+
+
+(defun isPremisseInBF (premisse BF)
     (let ((OK NIL))
         (dolist (fait BF OK)
             (if (member (nth 1 premisse) fait :test 'equal)
-                (setq OK (eval-fait fait premisse))))))
+                (setq OK 
+                    (if (equal (car premisse) '=)
+                        (equal (nth 2 fait) (nth 2 premisse))
+                        (eval (list (car premisse) (nth 2 fait) (nth 2 premisse)))))))))
 
 
-;;;     MOTEUR D'INFERENCE EN CHAINAGE ARRIERE
+; Moteur d'inférence, chaine arrière
 
 (defun verifier (but)
     (let (EC (BR *BR*) (BF *BF*) premissesValides regleCourante)
         (loop
             (format t "~%BF: ~a~%~%" BF)
-            (if (connu? but BF)
+            (if (member but BF :test 'equal)
                 (return "Vous présentez les symptomes d'une dépression.")
                 (dolist (regle BR)
-                    (dolist (premisse (regle-premisse regle))
+                    (dolist (premisse (cadr regle))
                         (setq premissesValides T)
-                        (when (not (declenchable premisse BF))
+                        (when (not (isPremisseInBF premisse BF))
                             (setq premissesValides NIL)))
                     (if premissesValides
                     (progn
@@ -58,5 +68,5 @@
             (if EC
                 (progn
                     (setq regleCourante (pop EC))
-                    (pushnew (regle-consequence regleCourante) BF))
+                    (pushnew (car (last regleCourante)) BF))
                 (return "Vous ne présentez pas les symptomes d'une dépression mais vous pouvez consulter un médecin pour confirmer l'analyse de vos symptômes.")))))
