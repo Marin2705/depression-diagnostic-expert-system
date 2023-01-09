@@ -12,10 +12,10 @@
 ;     (car (last regle)))
 
 ; Determiner les regles concluant sur un but determine.
-; (defun regles-candidates (but BR)
+; (defun regles-candidates (goal BR)
 ;     (let (result)
 ;         (dolist (regle BR (reverse result))
-;             (if (member (cadr but) (regle-consequence regle))
+;             (if (member (cadr goal) (regle-consequence regle))
 ;                 (push regle result)))))
 
 ; Determiner si un fait appartient ?la base de fait.
@@ -49,12 +49,12 @@
 
 ; Moteur d'inférence, chaine arrière
 
-(defun verifier (but)
+(defun runEngine (goal)
     (let (EC (BR *BR*) (BF *BF*) premissesValides regleCourante)
         (loop
-            (format t "~%BF: ~a~%~%" BF)
-            (if (member but BF :test 'equal)
-                (return "Vous présentez les symptomes d'une dépression.")
+            ; (format t "~%BF: ~a~%~%" BF)
+            (if (member goal BF :test 'equal)
+                (return T) ; engine found goal in BF
                 (dolist (regle BR)
                     (dolist (premisse (cadr regle))
                         (setq premissesValides T)
@@ -64,9 +64,9 @@
                     (progn
                         (push regle EC)
                         (setq BR (remove regle BR))))))
-            (format t "~%EC: ~a~%" EC)
+            ; (format t "~%EC: ~a~%" EC)
             (if EC
                 (progn
                     (setq regleCourante (pop EC))
                     (pushnew (car (last regleCourante)) BF))
-                (return "Vous ne présentez pas les symptomes d'une dépression mais vous pouvez consulter un médecin pour confirmer l'analyse de vos symptômes.")))))
+                    (return NIL))))) ; engine did not find goal in BF

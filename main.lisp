@@ -1,9 +1,9 @@
 ;;; import
 (load "engine.lisp")
 
-; set *but*
+; set *goal*
 
-(defparameter *but* '(= etatDepressif T))
+(defparameter *goal* '(= etatDepressif T))
 
 ; set *questions*
 
@@ -62,10 +62,16 @@
             (cond   ((= action 1)
                         (progn 
                             (setf *BF* ())
-                            (dolist (question *questions*)
-                                (printQuestion question)
-                            )
-                            (write-string (verifier *but*))))
+                            (let ((indexQuestion 0) (questionsLength (list-length *questions*)) (resultEngine NIL))
+                                (dolist (question *questions*)
+                                    (incf indexQuestion)
+                                    (printQuestion question)
+                                    (setq resultEngine (runEngine *goal*))
+                                    (if resultEngine 
+                                        (progn 
+                                            (write-line "Vous présentez les symptomes d'une dépression.")
+                                            (return-from menu)))) ; TODO : break from dolist/loop, not from the function
+                                (write-line "Vous ne présentez pas les symptomes d'une dépression mais vous pouvez consulter un médecin pour confirmer l'analyse de vos symptômes."))))
                         ((= action 2)
                         (quit))
                         ((write-string "Wrong input. Please try again with a number included in the menu."))
