@@ -59,9 +59,9 @@
             (cond   ((= action 1)
                         (progn 
                             (setf *BF* ())
-                            (let ((indexQuestion 0) (questionsLength (list-length *questions*)) (resultEngine NIL))
+                            (let ((indexQuestion 0) (questionsLength (list-length *questions*)))
                                 (loop for question in *questions*
-                                    do (progn (incf indexQuestion) 
+                                    do (progn (incf indexQuestion)
                                         (printQuestion question)
                                         (when (runEngine *goal*)
                                             (progn
