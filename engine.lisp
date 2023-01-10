@@ -1,72 +1,55 @@
+;; Chargement des fichiers BR.lisp et BF.lisp
 (load "BR.lisp")
 (load "BF.lisp")
 
-;;;     FONCTIONS OUTILS
+;; Définition de fonctions pour récupérer les différentes parties d'une règle
+(defun cclRule (rule)
+  (caddr rule))
 
-; Premisses d'une regle.
-(defun regle-premisse (regle)
-    (cadr regle))
+(defun premisseRule (rule)
+  (cadr rule))
 
-; Consequence d'une regle.
-; (defun regle-consequence (regle)
-;     (car (last regle)))
+(defun numRules (rule)
+  (car rule))
 
-; Determiner les regles concluant sur un but determine.
-; (defun regles-candidates (goal BR)
-;     (let (result)
-;         (dolist (regle BR (reverse result))
-;             (if (member (cadr goal) (regle-consequence regle))
-;                 (push regle result)))))
+;; Fonction qui vérifie si l'objectif "goal" appartient à la base de faits "BF"
+(defun belongs (goal BF)
+  (let ((value (cadr (assoc (cadr goal) BF))))
+    (if value
+        (funcall (car goal) value (caddr goal)))))
 
-; Determiner si un fait appartient ?la base de fait.
-; (defun connu? (fait BF)
-;     (if (member fait BF :test 'equal) T NIL))
+;; Fonction qui retourne la liste des règles de la base de règles "BR"
+;; dont la conclusion vérifie l'objectif "goal"
+(defun candidates_rule (goal BR)
+  (if BR
+      (let* ((conclusion (cclRule (car BR)))
+             (attribut (cadr conclusion))
+             (value (caddr conclusion)))
+        (if (and (eq attribut (cadr goal))
+                 (funcall (car goal) value (caddr goal)))
+            (cons (car BR) (candidates_rule goal (cdr BR)))
+          (candidates_rule goal (cdr BR))))))
 
-; Comparer un fait a son premisse de meme type.
-(defun eval-fait (fait premisse)
-    (if (equal (car premisse) '=)
-        (equal (nth 2 fait) (nth 2 premisse))
-        (eval (list (car premisse) (nth 2 fait) (nth 2 premisse)))))
-
-; Determiner si une règle est déclenchable c'est à dire que l'attribut est 
-; trouvable dans la BF et qu'il est vérifié par eval-fait.
-; (defun declenchable (premisse BF)
-;     (let ((OK NIL))
-;         (dolist (fait BF OK)
-;             (if (member (nth 1 premisse) fait :test 'equal)
-;                 (setq OK (eval-fait fait premisse))))))
-
-
-(defun isPremisseInBF (premisse BF)
-    (let ((OK NIL))
-        (dolist (fait BF OK)
-            (if (member (nth 1 premisse) fait :test 'equal)
-                (setq OK 
-                    (if (equal (car premisse) '=)
-                        (equal (nth 2 fait) (nth 2 premisse))
-                        (eval (list (car premisse) (nth 2 fait) (nth 2 premisse)))))))))
-
-
-; Moteur d'inférence, chaine arrière
-
-(defun runEngine (goal)
-    (let (EC (BR *BR*) (BF *BF*) premissesValides regleCourante)
-        (loop
-            ; (format t "~%BF: ~a~%~%" BF)
-            (if (member goal BF :test 'equal)
-                (return T) ; engine found goal in BF
-                (dolist (regle BR)
-                    (dolist (premisse (cadr regle))
-                        (setq premissesValides T)
-                        (when (not (isPremisseInBF premisse BF))
-                            (setq premissesValides NIL)))
-                    (if premissesValides
-                    (progn
-                        (push regle EC)
-                        (setq BR (remove regle BR))))))
-            ; (format t "~%EC: ~a~%" EC)
-            (if EC
-                (progn
-                    (setq regleCourante (pop EC))
-                    (pushnew (car (last regleCourante)) BF))
-                    (return NIL))))) ; engine did not find goal in BF
+;; Fonction principale de l'algorithme de chaînage arrière
+(defun runEngine (goal &optional (i 0))
+  (let ((BR *BR*) (BF *BF*))
+    (if (member goal BF)
+        (progn
+          (format t "~V@t   But : ~A proof ~%" i goal)
+          t)
+      (progn
+        (let ((rules (candidates_rule goal BR)) (sol nil))
+        (dolist (rule rules)
+            (when (not sol)
+                (format t "~%~V@t VERIFIE_OU ~A Regles ~s :  ~A ~%" i goal (numRules (rule)) (rule))
+                (let ((premisses (premisseRule (rule))))
+                    (setq sol t)
+                    (dolist (premisse premisses)
+                        (format t "~V@t  ~t VERIFIE_ET premisse ~A~%" (+ 1 i) premisse)
+                        (setq sol (runEngine (pop premisses) (+ 9 i)))
+                        (when (not sol) (return))
+                    )
+                    (when sol (push (numRules (rule)) sol))
+                )))
+            (pop rules))
+          sol))))
