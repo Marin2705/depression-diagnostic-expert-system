@@ -30,7 +30,7 @@
             (cons (car BR) (candidates_rule goal (cdr BR)))
           (candidates_rule goal (cdr BR))))))
 
-;; Fonction principale de l'algorithme de chaînage avant
+;; Fonction principale de l'algorithme de chaînage arrière
 (defun runEngine (goal &optional (i 0))
   (let ((BR *BR*) (BF *BF*))
     (if (member goal BF)
