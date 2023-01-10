@@ -20,15 +20,21 @@
 
 ;; Fonction qui retourne la liste des règles de la base de règles "BR"
 ;; dont la conclusion vérifie l'objectif "goal"
+; (defun candidates_rule (goal BR)
+;   (if BR
+;       (let* ((conclusion (cclRule (car BR)))
+;              (attribut (cadr conclusion))
+;              (value (caddr conclusion)))
+;         (if (and (eq attribut (cadr goal))
+;                  (funcall (car goal) value (caddr goal)))
+;             (cons (car BR) (candidates_rule goal (cdr BR)))
+;           (candidates_rule goal (cdr BR))))))
+
 (defun candidates_rule (goal BR)
   (if BR
-      (let* ((conclusion (cclRule (car BR)))
-             (attribut (cadr conclusion))
-             (value (caddr conclusion)))
-        (if (and (eq attribut (cadr goal))
-                 (funcall (car goal) value (caddr goal)))
-            (cons (car BR) (candidates_rule goal (cdr BR)))
-          (candidates_rule goal (cdr BR))))))
+      (if (EQUAL (cclRule (car BR)) goal)
+          (cons (car BR) (candidates_rule goal (cdr BR)))
+        (candidates_rule goal (cdr BR)))))
 
 ;; Fonction principale de l'algorithme de chaînage arrière
 (defun runEngine (goal &optional (i 0))
@@ -38,18 +44,18 @@
           (format t "~V@t   But : ~A proof ~%" i goal)
           t)
       (progn
-        (let ((rules (candidates_rule goal BR)) (sol nil))
+        (let ((rules (candidates_rule goal BR)) (sol))
         (dolist (rule rules)
             (when (not sol)
-                (format t "~%~V@t VERIFIE_OU ~A Regles ~s :  ~A ~%" i goal (numRules (rule)) (rule))
-                (let ((premisses (premisseRule (rule))))
+                (format t "~%~V@t VERIFIE_OU ~A Regles ~s :  ~A ~%" i goal (numRules rule) rule)
+                (let ((premisses (premisseRule rule)))
                     (setq sol t)
                     (dolist (premisse premisses)
                         (format t "~V@t  ~t VERIFIE_ET premisse ~A~%" (+ 1 i) premisse)
                         (setq sol (runEngine (pop premisses) (+ 9 i)))
                         (when (not sol) (return))
                     )
-                    (when sol (push (numRules (rule)) sol))
+                    (when sol (push (numRules rule) sol))
                 )))
-            (pop rules))
-          sol))))
+            (pop rules)
+          sol)))))
