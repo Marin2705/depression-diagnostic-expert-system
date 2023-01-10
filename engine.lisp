@@ -50,4 +50,4 @@
                   (push (numRules (car rules)) sol)
                 )))
             (pop rules))
-          sol)))))
+          sol))))
