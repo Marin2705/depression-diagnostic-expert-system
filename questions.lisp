@@ -21,40 +21,37 @@
 
 ; Après l'accouchement, baby blues et dépression du post-partum
 
-(defun testHF(x)
-    (or (equalp x 'H) (equalp x 'F)))
-
-(defun testYesNo(x)
-    (or (equalp x 'oui) (equalp x 'non)))
-
 (defparameter *questions* (list
-    '(troublePrincipal1 ("Avez-vous ressenti le symptome suivant :" "une tristesse constante" "une humeur dépressive qui dure presque toute la journée et qui se répète pratiquement tous les jours depuis au moins deux semaines. Elle peut s'accompagner de pleurs" "(réponse attendue : oui/non)") testYesNo)
+    '(humeur ("Comment décririez-vous votre humeur en ce moment ?") (joie tristesse colere neutre peur))
+    '(dureeJournee ("Cette humeur dure-t-elle toute la journée ou presque ?") (oui non))
+    '(constance ("La ressentez-vous pratiquement tous les jours depuis au moins deux semaines ?") (oui non))
 
-    '(troublePrincipal2 ("Avez-vous ressenti le symptome suivant :" "un abattement et une perte d'intérêt et de plaisir" "pour des activités du quotidien et aussi pour les activités habituellement agréables" "(réponse attendue : oui/non)") testYesNo)
+    '(troublePrincipal1 ("Avez-vous ressenti un abattement et une perte d'intérêt et de plaisir dans vos activités du quotidien et vos activités habituellement agréables ?") (oui non))
 
-    '(troublePrincipal3 ("Avez-vous ressenti le symptome suivant :" "une réduction de l'énergie ou une fatigabilité anormale." "La personne souffre d'une fatigue intense, souvent dès le matin et a l'impression de manquer d'énergie en permanence. Cette fatigue n'est pas améliorée par le repos ou le sommeil." "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire1 ("Avez-vous ressenti le symptome suivant :" "une dévalorisation de soi, une perte de confiance en soi et d'estime de soi, un sentiment d'inutilité" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire2 ("Avez-vous ressenti le symptome suivant :" "un sentiment d'inutilité et une culpabilité excessive et injustifiée" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire3 ("Avez-vous ressenti le symptome suivant :" "une vision du futur et de la vie très négative avec des perspectives pessimistes" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire4 ("Avez-vous ressenti le symptome suivant :" "des pensées autour de la mort en général, et parfois autour du suicide" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire5 ("Avez-vous ressenti le symptome suivant :" "une diminution de la capacité de concentration, d'attention et de mémorisation" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire6 ("Avez-vous ressenti le symptome suivant :" "une dégradation du sommeil. Il devient peu réparateur, souvent trop court avec des réveils précoces, le matin" "(réponse attendue : oui/non)") testYesNo)
-
-    '(troubleSecondaire6 ("Avez-vous ressenti le symptome suivant :" "une perte de l'appétit qui peut entraîner un amaigrissement." "(réponse attendue : oui/non)") testYesNo)
+    '(troublePrincipal2 ("Ressentez-vous une réduction de l'énergie ou une fatigabilité anormale ?" "Souffrez-voous d'une fatigue intense, souvent dès le matin ?" "Avez-vous l'impression de manquer d'énergie en permanence ?" "Cette fatigue n'est pas améliorée par le repos ou le sommeil.") (oui non))
 
 
+    '(troubleSecondaire1 ("Ressentez-vous une dévalorisation de soi, une perte de confiance en soi et d'estime de soi, un sentiment d'inutilité ?") (oui non))
 
-    ; '(nombreTroublesPrincipaux ("nombre de troubles principaux") numberp)
-    ; '(nombreTroublesSecondaires ("nombre de troubles secondaires") numberp)
-    '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
-    '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
-    '(genre "votre genre ? (H/F)" testHF)
-    '(age "votre age ?" numberp)
-    '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (vrai/faux)" testYesNo)
+    '(troubleSecondaire2 ("Ressentez-vous un sentiment d'inutilité et une culpabilité excessive et injustifiée ?") (oui non))
+
+    '(vision ("Quelle est votre vision actuelle du futur et de la vie ?" "Est-elle très négative avec des perspectives pessimistes ?") (positive negative pessimiste optimiste neutre))
+
+    '(troubleSecondaire4 ("Avez-vous des pensées autour de la mort en général, et parfois autour du suicide ?") (oui non))
+
+    '(troubleSecondaire5 ("Avez-vous ressenti une diminution de la capacité de concentration, d'attention et de mémorisation ?") (oui non))
+
+    '(troubleSecondaire6 ("Avez-vous ressenti une dégradation du sommeil ?" "Il devient peu réparateur, souvent trop court avec des réveils précoces, le matin") (oui non))
+
+    '(troubleSecondaire7 ("Avez-vous ressenti une perte de l'appétit ?" "Celle-ci peut également entraîner un amaigrissement.") (oui non))
+
+
+
+    ; '(nombreTroublesPrincipaux ("nombre de troubles principaux") "nombre" numberp)
+    ; '(nombreTroublesSecondaires ("nombre de troubles secondaires") "nombre" numberp)
+    ; '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
+    ; '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
+    ; '(genre "votre genre ? (H/F)" (H F))
+    ; '(age "votre age ?" numberp)
+    ; '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (oui/non)" (oui non))
 ))
