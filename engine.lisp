@@ -22,7 +22,7 @@
 	(if (member fact *BF*) T NIL))
   
 (defun checkPremisse (premisse)
-    (if (funcall (cadr premisse) (symbol-value (car premisse)) (caddr premisse)) 1 0)) ;;possible erreur
+    (if (funcall (car premisse) (symbol-value (cadr premisse)) (caddr premisse)) 1 0)) ;;possible erreur
 
 (defun desactivateRule (rule) ;; a voir
 	(setf *BR* (delete-if #'(lambda (item) (eq (symbol-value item) rule)) *BR*)))
@@ -212,5 +212,5 @@
 		((= type 1)
 			chainageAarriere)
 		((= type 2)
-			chainageAvant)
+			chainageAvant)))
 		
