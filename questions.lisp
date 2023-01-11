@@ -1,5 +1,5 @@
 (defparameter *questions* (list
-    '("avez-vous la sensation d'être dépressif ? (OUI ou NON)" 'sensation_depression)
+    '("avez-vous la sensation d'être dépressif ? (oui ou non)" 'sensation_depression)
     '("Ressentez-vous un sentiment ou des sensations semblables a la tristesse ?(oui ou non)" 'tristesse)
     '("Avez-vous perte d'intérêt en géneral ?(oui ou non)" 'faible_interet)
     '("Resentez-vous un trouble en particulier ? (sommeil,appetit ou concentration)" 'trouble)
