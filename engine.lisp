@@ -5,10 +5,6 @@
 (load "depression.lisp")
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Initialisation des variables globales 
-(setq *HISTORIC* NIL)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Définition des fonctions pour récupérer les différentes parties d'une règle
@@ -32,7 +28,7 @@
 	(setf *BR* (delete-if #'(lambda (item) (eq (symbol-value item) rule)) *BR*)))
 	
 (defun executeRule (rule)
-    (let ((conclusion (getConclusionRule rule))) ;; (pushnew (symbol rule) *HISTORIC*)
+    (let ((conclusion (getConclusionRule rule)))
 		(pushnew conclusion *BF*)))
   
 (defun checkRule (rule)
