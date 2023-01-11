@@ -188,7 +188,6 @@
             (format t "~%Il s'agit de la dépression ~S" (getNameDepression (symbol-value activity)))
             (format t "~%~S" (getDescriptionDepression (symbol-value activity))))
 			(format t "~%~%###################################~%~%Vous n'avez pas de dépression~%")))
-    (format t "~%~%~%Lancez à nouveau (chainage-avant) ou (chainage-arriere) pour re-essayer le SE ~%"))
  
 
 
@@ -206,7 +205,16 @@
 			(when end (return depression)))
 		(if depression
 			(format t "~%~%###################################~%~%Vous semblez de bien êtr atteint par cette maladie.")
-			(format t "~%~%###################################~%~%Vous n'avez pas cette maladie")))
-    (format t "~%~%~%Lancez à nouveau (chainage-avant) ou (chainage-arriere) pour re-essayer le SE ~%"))
+			(format t "~%~%###################################~%~%Vous n'avez pas cette maladie"))))
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; FONCTION PRINCIPALE
+(defun runEngine (type)
+    (cond 
+		((= type 1)
+			chainageAarriere)
+		((= type 2)
+			chainageAvant)
+		
