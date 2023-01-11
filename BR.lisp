@@ -53,3 +53,4 @@
 ;;La dépression masquée
 
     '(R28  ((futur eq oui)) 'vision_futur_négatif ))
+))
