@@ -1,4 +1,5 @@
 (defparameter *questions* (list
+    '("avez-vous la sensation d'être dépressif ? (OUI ou NON)" 'proche_station)
     '("Ressentez-vous un sentiment ou des sensations semblables a la tristesse ?(oui ou non)" 'type_activite)
     '("Avez-vous perte d'intérêt en géneral ?(oui ou non)" 'type_intellectuelle)
     '("Resentez-vous un trouble en particulier ? (sommeil,appetit ou concentration)" 'art)
@@ -14,9 +15,10 @@
     '("Quel âge avez-vous ?" 'type_detente)
     '("Avez-vous des maladies graves ?(oui ou non)" 'type_detente)
     '("Avez-vous une famille présente pour vous ?(oui ou non)" 'type_detente)
-    '("Cherchez-vous une activité dans une COURS ou en INTERIEUR ?" 'type_pIntCours)
-    '("Quelle particularité préférez-vous parmis FILET, BUT, PANIER ?" 'type_pInterieure)
-    '("Cherchez-vous une activité dans AQUATIQUE ou HIVERNALE ?" 'type_pSpeciale)
-    '("Etes-vous proche d'une station de ski ? (OUI ou NON)" 'proche_station)
+    '("Avez-vous constamment ces symptomes ?(oui ou non)" 'type_detente)
+    '("Les symptomes vous arrivent-il plus souvent en hiver ?(oui ou non)" 'type_pInterieure)
+    '("Avez-vous des sauts d'humeurs ?(oui ou non)" 'type_pSpeciale)
+    '("Vous plaignez vous souvent ?(oui ou non)" 'proche_station)
+    '("Avez-vous des sensations physiques désagréables ?(oui ou non)" 'proche_station)
+    '("Avez-vous une vision du futur négative ?(oui ou non)" 'proche_station)
 ))
-
