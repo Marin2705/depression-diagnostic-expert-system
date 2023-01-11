@@ -81,7 +81,14 @@
 ;; Définition des fonctions pour agir sur les différentes dépressions
 (defun askDepression ()
     (let ((dep NIL)(nameDep NIL))
-		(format t "~%Indiquez le nom de la dépression que vous pensez avoir~%> ")
+		(format t "~%Indiquez le nom de la dépression que vous pensez avoir
+      ~%Réponses possibles : 
+      ~%- dépression réactionnelle
+      ~%- dépression endogène
+      ~%- dépression névrotique
+      ~%- dépression du post-partum
+      ~%- ...
+      ~%> ") ;; TODO add all types of depression
 		(clear-input)
 		(setq dep (read))
 		(dolist (depression *depression*)
@@ -131,7 +138,7 @@
     dep))
   
 (defun askBetterQuestion ()
-    (let ((questions NIL)(param NIL)(best-score 0)(questionToAsk NIL))
+    (let ((questions NIL)(param NIL)(bestScore 0)(questionToAsk NIL))
 		(dolist (depression *depression*)
 			(dolist (condition (getConditionsDepression (symbol-value depression)))
 			(dolist (fact condition)
@@ -150,7 +157,7 @@
 				(progn 
 					(dolist (condition (getPremisseRule (symbol-value rule)))
 						(setq variablesR (incrementQuestionPriority variablesR (car condition)))))))
-    variables-r))
+    variablesR))
   
 (defun incrementQuestionPriority (variables param)
     (let ((variablesR variables)(tmp NIL))
@@ -181,16 +188,16 @@
 			(when end (return depression)))
 		(if depression
 			(progn (format t "~%~%###################################~%~%Nous avons trouvé la maladie dont vous êtes atteint")
-            (format t "~%Il s'agit de la dépression ~S" (getNameDepression (symbol-value activity)))
-            (format t "~%~S" (getDescriptionDepression (symbol-value activity))))
-			(format t "~%~%###################################~%~%Vous n'avez pas de dépression~%")))
+            (format t "~%Il s'agit de la dépression ~S" (getNameDepression (symbol-value depression)))
+            (format t "~%~S" (getDescriptionDepression (symbol-value depression))))
+			(format t "~%~%###################################~%~%Vous n'avez pas de dépression~%"))))
  
 
 
 ;;;;;;;;;;;;;;;;;;;
 ;; CHAINAGE ARRIERE
 ;; Indiquez le nom exact de la dépression : exemple> "dépression réactionnelle"
-(defun chainageAarriere ()
+(defun chainageArriere ()
     (let ((end NIL) (depression NIL))
 		(setq *depression* (list (askDepression)))
 		(loop
@@ -210,7 +217,7 @@
 (defun runEngine (type)
     (cond 
 		((= type 1)
-			chainageAarriere)
+			(chainageArriere))
 		((= type 2)
-			chainageAvant)))
+			(chainageAvant))))
 		

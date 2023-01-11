@@ -1,10 +1,6 @@
 ;;; import
 (load "engine.lisp")
 
-;; Lancement :
-(progn
-  (format t "~%Bienvenue au cabinet...")
-
 (defun printMenu()
     (terpri)
 	(write-line "------ Menu ------")
@@ -24,18 +20,22 @@
     (terpri)
     (let ((action_1 (read)))
         (if (numberp action_1) 
-            (cond ((= action_1 1)
-				(printMenuExpertType)
-				(terpri)
-				(let ((action_2 (read)))
-        		(if (numberp action_2) 
-            		(cond ((= action_2 1)
-                        (runEngine 1))
-						((= action_2 2)
-						(runEngine 2))))))
-				(= action_1 2)
-					(quit)))))
-    ((write-line "Entrée invalide. Merci d'entrer une valeur proposée dans le menu."))
-    (write-line "Entrée invalide. Merci d'entrer une valeur proposée dans le menu.")
+            (cond 
+				((= action_1 1)
+					(printMenuExpertType)
+					(terpri)
+					(let ((action_2 (read)))
+					(if (numberp action_2) 
+						(cond ((= action_2 1)
+							(runEngine 1))
+							((= action_2 2)
+							(runEngine 2))))))
+				((= action_1 2)
+					(quit))
+    			)
+				(write-line "Entrée invalide. Merci d'entrer une valeur proposée dans le menu.")))
 	(menu))
+
+;; Lancement :
+(format t "~%Bienvenue au cabinet...")
 (menu)
