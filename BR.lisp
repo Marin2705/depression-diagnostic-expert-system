@@ -50,9 +50,8 @@
 
     '(R26 ((type_intellectuelle eq detente)) 'plaintes_régulières))
     '(R27 ((type_intellectuelle eq detente)) 'symptomes_somatiques))
-    '(R28 ((type_intellectuelle eq detente)) 'symptomes_psycho_comportementaux ))
-    '(R29  ((type_intellectuelle eq detente)) 'non_symptomes_depressif ))
+    '(R28  ((type_intellectuelle eq detente)) 'non_symptomes_depressif ))
 
 ;;La dépression masquée
 
-    '(R30  ((type_intellectuelle eq detente)) 'vision_futur_négatif ))
+    '(R29  ((type_intellectuelle eq detente)) 'vision_futur_négatif ))
