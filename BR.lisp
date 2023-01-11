@@ -1,7 +1,7 @@
 ; Base de règles
 
 (defparameter *BR* (list
-    '(R1 ((sensation_depression eq oui)) 'triste))
+    '(R1 ((tristesse eq oui)) 'triste))
     '(R2 ((faible_interet eq oui)) 'manque_interer))
     '(R3 ((trouble eq sommeil)) 'trouble_sommeil))
     '(R4 ((trouble eq appetit)) 'trouble_appetit))
