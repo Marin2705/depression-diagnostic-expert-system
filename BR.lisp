@@ -37,20 +37,19 @@
 
 ;;La dépression de la personne âgée
 
-    '(R22 ((type_intellectuelle eq detente)) 'pas_depressif_en_general))
-    '(R23 ((type_intellectuelle eq detente)) 'saison_hiver))
+    '(R22 ((continuite eq oui)) 'pas_depressif_en_general))
+    '(R23 ((hiver eq oui)) 'saison_hiver))
 
 ;;La dépression saisonnière
 
-    '(R24 ((type_intellectuelle eq detente)) 'continue))
-    '(R25 ((type_intellectuelle eq detente)) 'discontinue_bipolaire))
+    '(R24 ((saut_humeur eq oui)) 'discontinue_bipolaire))
 
 ;;La maniaco-dépression
 
-    '(R26 ((type_intellectuelle eq detente)) 'plaintes_régulières))
-    '(R27 ((type_intellectuelle eq detente)) 'symptomes_somatiques))
-    '(R28  ((type_intellectuelle eq detente)) 'non_symptomes_depressif ))
+    '(R25 ((plainte eq oui)) 'plaintes_régulières))
+    '(R26 ((proche_station eq oui)) 'symptomes_somatiques))
+    '(R27  ((sensation_depression eq non)) 'non_symptomes_depressif ))
 
 ;;La dépression masquée
 
-    '(R29  ((type_intellectuelle eq detente)) 'vision_futur_négatif ))
+    '(R28  ((futur eq oui)) 'vision_futur_négatif ))
