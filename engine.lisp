@@ -4,6 +4,12 @@
 (load "questions.lisp")
 (load "depression.lisp")
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Initialisation des variables globales 
+(setq *HISTORIC* NIL)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Définition des fonctions pour récupérer les différentes parties d'une règle
 (defun getConclusionRule (rule)
@@ -26,7 +32,7 @@
 	(setf *BR* (delete-if #'(lambda (item) (eq (symbol-value item) rule)) *BR*)))
 	
 (defun executeRule (rule)
-    (let ((conclusion (getConclusionRule rule)))
+    (let ((conclusion (getConclusionRule rule))) ;; (pushnew (symbol rule) *HISTORIC*)
 		(pushnew conclusion *BF*)))
   
 (defun checkRule (rule)
@@ -168,7 +174,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
 ;; CHAINAGE AVANT 
-  (defun chainage-avant ()
+  (defun chainageAvant ()
     (let ((end NIL)(depression NIL))
 		(loop
 			(if (not (askBetterQuestion)) (setq end T)
@@ -178,10 +184,10 @@
 				(if depression (setq end T))))   
 			(when end (return depression)))
 		(if depression
-			(progn (format t "~%~%###################################~%~%Nous avons trouvé une dépression pouvant vous convenir !")
+			(progn (format t "~%~%###################################~%~%Nous avons trouvé la maladie dont vous êtes atteint")
             (format t "~%Il s'agit de la dépression ~S" (getNameDepression (symbol-value activity)))
             (format t "~%~S" (getDescriptionDepression (symbol-value activity))))
-			(format t "~%~%###################################~%~%Nous n'avons malheureusement pas trouvé d'activité pour vous...~%(les activites les plus proches de vos envies se situent dans la liste *depression*)")))
+			(format t "~%~%###################################~%~%Vous n'avez pas de dépression~%")))
     (format t "~%~%~%Lancez à nouveau (chainage-avant) ou (chainage-arriere) pour re-essayer le SE ~%"))
  
 
@@ -189,16 +195,18 @@
 ;;;;;;;;;;;;;;;;;;;
 ;; CHAINAGE ARRIERE
 ;; Indiquez le nom exact de la dépression : exemple> "dépression réactionnelle"
-(defun chainage-arriere ()
-    (let ((end NIL) (activityA NIL))
+(defun chainageAarriere ()
+    (let ((end NIL) (depression NIL))
 		(setq *depression* (list (askDepression)))
 		(loop
 			(if (not (askBetterQuestion)) (setq end T)
 				(progn 
 					(loop (when (not (checkRules)) (return T)))
-					(setq activity (checkDepressions))))   
-			(when end (return activity)))
-		(if activity
-			(format t "~%~%###################################~%~%L'activité que vous avez indiqué semble vous convenir !")
-			(format t "~%~%###################################~%~%L'activité ne vous convient malheureusement pas...")))
+					(setq depression (checkDepressions))))   
+			(when end (return depression)))
+		(if depression
+			(format t "~%~%###################################~%~%Vous semblez de bien êtr atteint par cette maladie.")
+			(format t "~%~%###################################~%~%Vous n'avez pas cette maladie")))
     (format t "~%~%~%Lancez à nouveau (chainage-avant) ou (chainage-arriere) pour re-essayer le SE ~%"))
+
+
