@@ -13,6 +13,7 @@
     '("Etes-vous un homme ou une femme (homme ou femme)" 'sexe)                           
     '("Avez-vous accouché ? Si oui depuis combien de mois avez-vous accouché ?" 'nb_acouchement)
     '("Quel âge avez-vous ?" 'age)
+    '("si vous aviez un conjoint l'avez vous perdu a cause de son décés ?(oui ou non)" 'décé)
     '("Avez-vous des maladies graves ?(oui ou non)" 'maladies)
     '("Avez-vous une famille présente pour vous ?(oui ou non)" 'famille)
     '("Avez-vous constamment ces symptomes ?(oui ou non)" 'continuite)
