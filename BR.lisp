@@ -54,3 +54,5 @@
     '(R29  ((type_intellectuelle eq detente)) 'non_symptomes_depressif ))
 
 ;;La dépression masquée
+
+    '(R30  ((type_intellectuelle eq detente)) 'vision_futur_négatif ))
