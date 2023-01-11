@@ -1,13 +1,20 @@
 ; Base de règles
 
 (defparameter *BR* (list
-    '(R1 ((type_activite eq intellectuelle)) 'triste))
+    '(R1 ((sensation_depression eq intellectuelle)) 'triste))
     '(R2 ((type_activite eq physique)) 'manque_interer))
     '(R3 ((type_intellectuelle eq creative)) 'trouble_sommeil))
     '(R4 ((type_intellectuelle eq culturelle)) 'trouble_appetit))
     '(R5 ((type_intellectuelle eq reflexive)) 'difficulte_concentration))
     '(R6 ((type_intellectuelle eq detente)) 'faible_estime))
     '(R7 ((type_intellectuelle eq detente)) 'causes_externes_fortes))
+
+ '("avez-vous la sensation d'être dépressif ? (OUI ou NON)" 'sensation_depression)
+    '("Ressentez-vous un sentiment ou des sensations semblables a la tristesse ?(oui ou non)" 'tristesse)
+    '("Avez-vous perte d'intérêt en géneral ?(oui ou non)" 'faible_interet)
+    '("Resentez-vous un trouble en particulier ? (sommeil,appetit ou concentration)" 'trouble)
+    '("Avez-vous faible estime de vous ?(oui ou non)" 'estime_de_soi)
+    '("Avez-vous vécu un évenement traumatisant ? Si oui notez l'importance de celle-ci sur 10 sinon mmettez 0." 'evennement_traumatisant)
 
 ;;La dépression réactionnelle
 
