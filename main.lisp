@@ -1,27 +1,10 @@
 ;;; import
 (load "engine.lisp")
+(load "questions.lisp")
 
 ; set *goal*
 
 (defparameter *goal* '(= etatDepressif T))
-
-; set *questions*
-
-(defun testHF(x)
-    (or (equalp x 'H) (equalp x 'F)))
-
-(defun testTF(x)
-    (or (equalp x 'true) (equalp x 'false)))
-
-(defparameter *questions* (list
-    '(nombreTroublesPrincipaux "nombre de troubles principaux" numberp)
-    '(nombreTroublesSecondaires "nombre de troubles secondaires" numberp)
-    '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
-    '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
-    '(genre "votre genre ? (H/F)" testHF)
-    '(age "votre age ?" numberp)
-    '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (true/false)" testTF)
-))
 
 ; run engine (with interface) :
 
@@ -35,7 +18,8 @@
 
 (defun printQuestion(question)
     (terpri)
-    (write-string (cadr question))
+    (dolist (text (cadr question))
+        (write-line text))
     (terpri)
     (write-line "Entrez votre réponse :")
     (terpri)
@@ -63,6 +47,7 @@
                                 (loop for question in *questions*
                                     do (progn (incf indexQuestion)
                                         (printQuestion question)
+                                        (write (runEngine *goal*))
                                         (when (runEngine *goal*)
                                             (progn
                                                 (terpri)
