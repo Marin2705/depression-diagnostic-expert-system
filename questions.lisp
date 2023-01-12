@@ -1,57 +1,48 @@
-; symptomes principaux :
-
-    ; une tristesse constante
-        ; une humeur dépressive qui dure presque toute la journée et qui se répète pratiquement tous les jours depuis au moins deux semaines. Elle peut s'accompagner de pleurs ;
-    ; un abattement et une perte d'intérêt et de plaisir
-        ; pour des activités du quotidien et aussi pour les activités habituellement agréables ;
-    ; une réduction de l'énergie ou une fatigabilité anormale.
-        ; La personne souffre d'une fatigue intense, souvent dès le matin et a l'impression de manquer d'énergie en permanence. Cette fatigue n'est pas améliorée par le repos ou le sommeil.
-
-; symptomes secondaires :
-
-    ; une dévalorisation de soi, une perte de confiance en soi et d'estime de soi, un sentiment d'inutilité ;
-    ; un sentiment d'inutilité et une culpabilité excessive et injustifiée ;
-    ; une vision du futur et de la vie très négative avec des perspectives pessimistes ;
-    ; des pensées autour de la mort en général, et parfois autour du suicide ;
-    ; une diminution de la capacité de concentration, d'attention et de mémorisation ;
-    ; une dégradation du sommeil. Il devient peu réparateur, souvent trop court avec des réveils précoces, le matin ;
-    ; une perte de l'appétit qui peut entraîner un amaigrissement.
-
-; dépression chez les personnes âgées
-
-; Après l'accouchement, baby blues et dépression du post-partum
+(defparameter sensation_depression 'default)
+(defparameter tristesse 'default)
+(defparameter faible_interet 'default)
+(defparameter trouble 'default)
+(defparameter estime_de_soi 'default)
+(defparameter evennement_traumatisant 'default)
+(defparameter empathie 'default)
+(defparameter ralentissement_psychomoteur 'default)
+(defparameter libido 'default)
+(defparameter intensite 'default)
+(defparameter environnement 'default)
+(defparameter sexe 'default)
+(defparameter nb_acouchement 'default)
+(defparameter age 'default)
+(defparameter décès 'default)
+(defparameter famille 'default)
+(defparameter continuite 'default)
+(defparameter hiver 'default)
+(defparameter saut_humeur 'default)
+(defparameter plainte 'default)
+(defparameter proche_station 'default)
+(defparameter futur 'default)
 
 (defparameter *questions* (list
-    '(humeur ("Comment décririez-vous votre humeur en ce moment ?") (joie tristesse colere neutre peur))
-    '(dureeJournee ("Cette humeur dure-t-elle toute la journée ou presque ?") (oui non))
-    '(constance ("La ressentez-vous pratiquement tous les jours depuis au moins deux semaines ?") (oui non))
-
-    '(troublePrincipal1 ("Avez-vous ressenti un abattement et une perte d'intérêt et de plaisir dans vos activités du quotidien et vos activités habituellement agréables ?") (oui non))
-
-    '(troublePrincipal2 ("Ressentez-vous une réduction de l'énergie ou une fatigabilité anormale ?" "Souffrez-voous d'une fatigue intense, souvent dès le matin ?" "Avez-vous l'impression de manquer d'énergie en permanence ?" "Cette fatigue n'est pas améliorée par le repos ou le sommeil.") (oui non))
-
-
-    '(troubleSecondaire1 ("Ressentez-vous une dévalorisation de soi, une perte de confiance en soi et d'estime de soi, un sentiment d'inutilité ?") (oui non))
-
-    '(troubleSecondaire2 ("Ressentez-vous un sentiment d'inutilité et une culpabilité excessive et injustifiée ?") (oui non))
-
-    '(vision ("Quelle est votre vision actuelle du futur et de la vie ?" "Est-elle très négative avec des perspectives pessimistes ?") (positive negative pessimiste optimiste neutre))
-
-    '(troubleSecondaire4 ("Avez-vous des pensées autour de la mort en général, et parfois autour du suicide ?") (oui non))
-
-    '(troubleSecondaire5 ("Avez-vous ressenti une diminution de la capacité de concentration, d'attention et de mémorisation ?") (oui non))
-
-    '(troubleSecondaire6 ("Avez-vous ressenti une dégradation du sommeil ?" "Il devient peu réparateur, souvent trop court avec des réveils précoces, le matin") (oui non))
-
-    '(troubleSecondaire7 ("Avez-vous ressenti une perte de l'appétit ?" "Celle-ci peut également entraîner un amaigrissement.") (oui non))
-
-
-
-    ; '(nombreTroublesPrincipaux ("nombre de troubles principaux") "nombre" numberp)
-    ; '(nombreTroublesSecondaires ("nombre de troubles secondaires") "nombre" numberp)
-    ; '(moisDepuisAccouchement "nombre de mois depuis l'accouchement" numberp)
-    ; '(symptomesPostnatale "nombre de symptomes de la dépression post-natale" numberp)
-    ; '(genre "votre genre ? (H/F)" (H F))
-    ; '(age "votre age ?" numberp)
-    ; '(troublePhysiqueOuCognitif "avez-vous un trouble physique ou cognitif ? (oui/non)" (oui non))
+    '("avez-vous la sensation d'être dépressif ? (oui ou non)" sensation_depression)
+    '("Ressentez-vous un sentiment ou des sensations semblables a la tristesse ?(oui ou non)" tristesse)
+    '("Avez-vous perte d'intérêt en géneral ?(oui ou non)" faible_interet)
+    '("Resentez-vous un trouble en particulier ? (sommeil,appetit ou concentration)" trouble)
+    '("Avez-vous faible estime de vous ?(oui ou non)" estime_de_soi)
+    '("Avez-vous vécu un évenement traumatisant ? Si oui notez l'importance de celle-ci sur 10 sinon mmettez 0." evennement_traumatisant)
+    '("Vous sentez-vous moins empathique ?(oui ou non)" empathie)
+    '("Vous sentez-vous plus lent dans vos mouvements ?(oui ou non)" ralentissement_psychomoteur)
+    '("Sentez-vous une perte de libido ?(oui ou non)" libido)
+    '("Notez sur 10 l'intensité des symptomes que vous avez." intensite)
+    '("Etes-vous sensible a votre environnement en termes de réaction émotionnelle ?(oui ou non)" environnement)
+    '("Etes-vous un homme ou une femme (homme ou femme)" sexe)                           
+    '("Avez-vous accouché ? Si non, mettez 0, si oui depuis combien de mois avez-vous accouché ?" nb_acouchement)
+    '("Quel âge avez-vous ?" age)
+    '("si vous aviez un conjoint l'avez vous perdu a cause de son décès ?(oui ou non)" décès)
+    '("Avez-vous des maladies graves ?(oui ou non)" maladies)
+    '("Avez-vous une famille présente pour vous ?(oui ou non)" famille)
+    '("Avez-vous constamment ces symptomes ?(oui ou non)" continuite)
+    '("Les symptomes vous arrivent-il plus souvent en hiver ?(oui ou non)" hiver)
+    '("Avez-vous des sauts d'humeurs ?(oui ou non)" saut_humeur)
+    '("Vous plaignez vous souvent ?(oui ou non)" plainte)
+    '("Avez-vous des sensations physiques désagréables ?(oui ou non)" proche_station)
+    '("Avez-vous une vision du futur négative ?(oui ou non)" futur)
 ))
