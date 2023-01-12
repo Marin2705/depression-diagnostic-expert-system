@@ -4,8 +4,6 @@
 (load "questions.lisp")
 (load "depression.lisp")
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Définition des fonctions pour récupérer les différentes parties d'une règle
 (defun getConclusionRule (rule)
@@ -22,32 +20,32 @@
 	(if (member fact *BF*) T NIL))
   
 (defun checkPremisse (premisse)
-    (if (funcall (car premisse) (symbol-value (cadr premisse)) (caddr premisse)) 1 0)) ;;possible erreur
+    (if (funcall (cadr premisse) (symbol-value (car premisse)) (caddr premisse)) 1 0))
 
-(defun desactivateRule (rule) ;; a voir
-	(setf *BR* (delete-if #'(lambda (item) (eq (symbol-value item) rule)) *BR*)))
+(defun desactivateRule (rule)
+	(setf *BR* (delete-if #'(lambda (item) (eq item rule)) *BR*)))
 	
 (defun executeRule (rule)
     (let ((conclusion (getConclusionRule rule)))
 		(pushnew conclusion *BF*)))
   
 (defun checkRule (rule)
-    (let ((toDelete 0)(execute 1))
-        (dolist (premisse (getPremisseRule rule)) 
-            (if (isFactDefined  (cadr premisse)) 
+    (let ((desactivate 0)(isTrue 1))
+        (dolist (premisse (getPremisseRule rule))
+            (if (isFactDefined  (car premisse)) 
                 (progn 
-					(setq execute (* (checkPremisse premisse) execute)) ;; a regarder
-					(if (= (checkPremisse premisse) 0) (setq toDelete 1)))
-                (setq execute 0)))
-        (if (= execute 1) (progn (executeRule rule)(desactivateRule rule))) 
-        (if (= toDelete 1)(desactivateRule rule)) 
-        execute))
+                  (setq isTrue (* (checkPremisse premisse) isTrue))
+                  (if (= (checkPremisse premisse) 0) (setq desactivate 1)))
+                (setq isTrue 0)))
+        (if (= isTrue 1) (progn (executeRule rule)(desactivateRule rule))) 
+        (if (= desactivate 1)(desactivateRule rule)) 
+        isTrue))
 		
 (defun checkRules ()
-    (let ((executed NIL))
+    (let ((isTrue NIL))
     (dolist (rule *BR* T)
-      (if (= (checkRule (symbol-value rule)) 1) (setq executed T)))
-      executed))
+      (if (= (checkRule rule) 1) (setq isTrue T)))
+      isTrue))
 	 
 	 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	 
@@ -64,7 +62,7 @@
     (clear-input)
     (set (getResponse question) (read))
     (pushnew (getResponse question) *BF*)
-    (setf *questions* (delete-if #'(lambda (item) (eq (symbol-value item) question)) *questions*)))
+    (setf *questions* (delete-if #'(lambda (item) (eq item question)) *questions*)))
 	
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
@@ -78,37 +76,20 @@
 (defun getDescriptionDepression (depression)
     (caddr depression))
   
-;; Définition des fonctions pour agir sur les différentes dépressions
-(defun askDepression ()
-    (let ((dep NIL)(nameDep NIL))
-		(format t "~%Indiquez le nom de la dépression que vous pensez avoir
-      ~%Réponses possibles : 
-      ~%- dépression réactionnelle
-      ~%- dépression endogène
-      ~%- dépression névrotique
-      ~%- dépression du post-partum
-      ~%- ...
-      ~%> ") ;; TODO add all types of depression
-		(clear-input)
-		(setq dep (read))
-		(dolist (depression *depression*)
-			(if (equal (getNameDepression (symbol-value depression)) dep) (setq nameDep depression)))
-	nameDep))
-  
 (defun desactiveDepression (depression)
-    (setf *depression* (delete-if #'(lambda (item) (eq (symbol-value item) depression)) *depression*)))
-  
+    (setf *depression* (delete-if #'(lambda (item) (eq item depression)) *depression*)))
+
 (defun isFactPossible (fact)
     (let ((possible NIL))
-		(dolist (rule *BR*) 
-			(if (equal (getConclusionRule (symbol-value rule)) fact) (setq possible T)))
-    possible))
+      (dolist (rule *BR*) 
+        (if (equal (getConclusionRule rule) fact) (setq possible T)))
+      possible))
   
 (defun isConditionPossible (condition)
     (let ((possible NIL))
-		(dolist (fact condition)
-			(if (isFactPossible fact) (setq possible T)))
-    possible))
+      (dolist (fact condition)
+        (if (isFactPossible fact) (setq possible T)))
+      possible))
   
 (defun isFactApproved (fact)
 	(if (member fact *BF*) T NIL))
@@ -129,95 +110,29 @@
                   (setq to-delete T)))))
       (if to-delete (desactiveDepression depression)) 
       possible))
-  
+
 (defun checkDepressions ()
-    (let ((dep NIL))
-		(dolist (depression *depression*)
-			(if (checkDepression (symbol-value depression)) (setq dep depression)))
-		(if (= (length *depression*) 1) (setq dep (car *depression*)))
+  (let ((dep NIL))
+    (dolist (depression *depression*)
+      (if (checkDepression depression) (setq dep depression)))
+    (if (= (length *depression*) 1) (setq dep (car *depression*)))
     dep))
-  
-(defun askBetterQuestion ()
-    (let ((questions NIL)(param NIL)(bestScore 0)(questionToAsk NIL))
-		(dolist (depression *depression*)
-			(dolist (condition (getConditionsDepression (symbol-value depression)))
-			(dolist (fact condition)
-				(setq questions (incrementVarToFact fact questions)))))
-		(dolist (q questions)
-			(if (>= (cadr q) bestScore)
-				(progn
-					(setq bestScore (cadr q))
-					(setq questionToAsk (car q)))))
-		(if questionToAsk (progn (askQuestion (symbol-value questionToAsk)) T) NIL)))
-  
-(defun incrementVarToFact (fact variables)
-	(let ((variablesR variables)) 
-		(dolist (rule *BR*)
-			(if (eq (getConclusionRule (symbol-value rule)) fact)
-				(progn 
-					(dolist (condition (getPremisseRule (symbol-value rule)))
-						(setq variablesR (incrementQuestionPriority variablesR (car condition)))))))
-    variablesR))
-  
-(defun incrementQuestionPriority (variables param)
-    (let ((variablesR variables)(tmp NIL))
-		(dolist (question *questions*)
-			(if (eq (getResponse (symbol-value question)) param)
-				(if (assoc question variablesR)
-					(progn
-					(setf tmp (cadr (assoc question variablesR)))
-					(setf (cadr (assoc question variablesR)) (+ tmp 1)))
-				(pushnew (list question 1) variablesR))))
-      variablesR))
-  
-  
-  (format t "~%Lancez le (chainage-avant) ou (chainage-arriere) pour essayer le SE ~%")
 
-
+(defun askAllQuestions ()
+  (dolist (q *questions*) 
+    (askQuestion q)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-;; CHAINAGE AVANT 
-  (defun chainageAvant ()
-    (let ((end NIL)(depression NIL))
-		(loop
-			(if (not (askBetterQuestion)) (setq end T)
-				(progn 
-					(loop (when (not (checkRules)) (return T)))
-					(setq depression (checkActivities))
-				(if depression (setq end T))))   
-			(when end (return depression)))
-		(if depression
-			(progn (format t "~%~%###################################~%~%Nous avons trouvé la maladie dont vous êtes atteint")
-            (format t "~%Il s'agit de la dépression ~S" (getNameDepression (symbol-value depression)))
-            (format t "~%~S" (getDescriptionDepression (symbol-value depression))))
-			(format t "~%~%###################################~%~%Vous n'avez pas de dépression~%"))))
- 
-
-
-;;;;;;;;;;;;;;;;;;;
-;; CHAINAGE ARRIERE
-;; Indiquez le nom exact de la dépression : exemple> "dépression réactionnelle"
-(defun chainageArriere ()
-    (let ((end NIL) (depression NIL))
-		(setq *depression* (list (askDepression)))
-		(loop
-			(if (not (askBetterQuestion)) (setq end T)
-				(progn 
-					(loop (when (not (checkRules)) (return T)))
-					(setq depression (checkDepressions))))   
-			(when end (return depression)))
-		(if depression
-			(format t "~%~%###################################~%~%Vous semblez de bien êtr atteint par cette maladie.")
-			(format t "~%~%###################################~%~%Vous n'avez pas cette maladie"))))
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;
 ;; FONCTION PRINCIPALE
-(defun runEngine (type)
-    (cond 
-		((= type 1)
-			(chainageArriere))
-		((= type 2)
-			(chainageAvant))))
-		
+;; CHAINAGE AVANT 
+(defun chainageAvant ()
+  (let ((end NIL)(depression NIL))
+  (askAllQuestions)
+  (progn 
+    (loop (when (not (checkRules)) (return T)))
+    (setq depression (checkDepressions)))
+  (if depression
+    (progn (format t "~%~%Nous avons trouvé la maladie dont vous êtes atteint")
+          (format t "~%Il s'agit de la dépression ~S" (getNameDepression depression))
+          (format t "~%~S" (getDescriptionDepression depression)))
+    (format t "~%Vous n'avez pas de dépression~%"))))
